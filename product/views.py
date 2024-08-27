@@ -6,14 +6,19 @@ from rest_framework.response import Response
 
 from core.permissions import ReadOnly, IsVendor
 from core.utils import throw_unauthenticated
-from .serializers import ProductSerializer
-from .models import Product, Order, OrderItem
+from .serializers import ProductSerializer, ProductImageSerializer
+from .models import Product, Order, OrderItem, ProductImage
 
 import traceback
 
 class ProductViewset(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsVendor | ReadOnly]
+
+class ProductImageViewset(ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
     permission_classes = [IsVendor | ReadOnly]
     
 @api_view(http_method_names=["POST"])

@@ -23,6 +23,10 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="uploads/")
+    
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_status = models.CharField(max_length=100, choices=PAYMENT_STATUS_OPTIONS, default="unpaid")

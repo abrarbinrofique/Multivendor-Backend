@@ -7,6 +7,7 @@ from . import views
 router = DefaultRouter()
 
 router.register("list", views.ProductViewset, basename="list")
+router.register("images", views.ProductImageViewset, basename="images")
 
 urlpatterns = router.urls + [
     path("create_order/", views.create_order, name="create_order"),
