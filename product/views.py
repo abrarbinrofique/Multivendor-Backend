@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from core.permissions import ReadOnly, IsVendor
 from core.utils import throw_unauthenticated
-from .serializers import ProductSerializer, ProductImageSerializer
+from .serializers import ProductSerializer, ProductImageSerializer,OrderItemSerializer,OrderSerializer
 from .models import Product, Order, OrderItem, ProductImage
 
 import traceback
@@ -20,6 +20,10 @@ class ProductImageViewset(ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [IsVendor | ReadOnly]
+    
+
+
+
     
 @api_view(http_method_names=["POST"])
 def create_order(request):
@@ -79,3 +83,28 @@ def create_order(request):
         return Response({
             "error": "There was a problem handling your request"
         })
+
+
+class Orderitemviewset(ModelViewSet):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+
+
+    def get_queryset(self):
+          queryset= super().get_queryset()
+
+          item_id=self.request.query_params.get('item_id')
+       
+
+          if item_id:
+               queryset=queryset.filter(item_id=item_id)
+        
+
+          return queryset
+         
+
+
+class Orderviewset(ModelViewSet):
+    queryset=Order.objects.all()
+    serializer_class=OrderSerializer
+
